@@ -28,12 +28,15 @@ SECRET_KEY = 'django-insecure-*30j=bb&(dt9z-j_rwm!mq=92l@0wse!0qx0(m7r=wpshqk*kr
 DEBUG = True
 
 
-# Allow all hosts for development
-ALLOWED_HOSTS = ['*']
 
 import os
-if os.environ.get('CODESPACE_NAME'):
-    ALLOWED_HOSTS.append(f"{os.environ.get('CODESPACE_NAME')}-8000.app.github.dev")
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+codespace_name = os.environ.get('CODESPACE_NAME')
+if codespace_name:
+    ALLOWED_HOSTS.append(f"{codespace_name}-8000.app.github.dev")
+    ALLOWED_HOSTS.append(codespace_name)
+else:
+    ALLOWED_HOSTS.append('*')
 
 
 # Application definition
@@ -95,10 +98,6 @@ DATABASES = {
         'ENFORCE_SCHEMA': False,
         'CLIENT': {
             'host': 'mongodb://localhost:27017',
-            'username': '',
-            'password': '',
-            'authSource': 'admin',
-            'authMechanism': 'SCRAM-SHA-1',
         },
     }
 }
